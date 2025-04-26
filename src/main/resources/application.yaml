@@ -1,6 +1,12 @@
 spring:
   application:
     name: spring-llm
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/sbdocs
+    username: admin
+    password: password
+
   ai:
     openai:
       api-key: empty
@@ -20,3 +26,13 @@ spring:
         options:
           model: gemma3
       base-url: http://localhost:11434
+
+  vectorstore:
+    pgvector:
+    index-type: HNSW
+    distance-type: COSINE_DISTANCE
+    dimension: 1536
+
+  docker:
+    compose:
+      lifecycle-management: start_only
