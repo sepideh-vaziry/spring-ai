@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
+import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SearchRequest;
@@ -25,9 +25,7 @@ public class SpringAssistantCommand {
 
   public SpringAssistantCommand(ChatClient.Builder builder, VectorStore vectorStore) {
     this.vectorStore = vectorStore;
-
     this.chatClient = builder
-        .defaultAdvisors(new QuestionAnswerAdvisor(vectorStore,SearchRequest.builder().topK(2).build()))
         .build();
   }
 
@@ -38,8 +36,9 @@ public class SpringAssistantCommand {
     Map<String, Object> promptParameters = new HashMap<>();
     promptParameters.put("input", message);
     promptParameters.put("documents", String.join("\n", findSimilarDocuments(message)));
+    Prompt prompt = promptTemplate.create(promptParameters);
 
-    return chatClient.prompt(promptTemplate.create(promptParameters))
+    return chatClient.prompt(prompt)
         .call()
         .content();
   }
