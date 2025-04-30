@@ -9,23 +9,15 @@ spring:
 
   ai:
     openai:
-      api-key: empty
-      chat:
-        base-url: http://localhost:11434
-        options:
-#          model: deepseek-r1:1.5b
-          model: gemma3
+      api-key: api_key
+    ollama:
       base-url: http://localhost:11434
+      chat:
+        model: gemma3
       embedding:
+        enabled: true
         options:
           model: nomic-embed-text
-        base-url: http://localhost:11434
-        enabled: true
-    ollama:
-      embedding:
-        options:
-          model: gemma3
-      base-url: http://localhost:11434
 
   vectorstore:
     pgvector:
