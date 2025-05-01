@@ -25,7 +25,7 @@ public class RagConfiguration {
   @Value("vectorstore.json")
   private String vectorStoreName;
 
-  @Bean
+  @Bean("olympicVectorStore")
   SimpleVectorStore simpleVectorStore(EmbeddingModel embeddingModel) {
     SimpleVectorStore simpleVectorStore = SimpleVectorStore.builder(embeddingModel)
         .build();

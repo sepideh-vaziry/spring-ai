@@ -3,11 +3,13 @@ package com.example.springllm;
 import com.example.springllm.rag.HintsRegistrar;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.ImportRuntimeHints;
 import org.springframework.shell.command.annotation.CommandScan;
 
 @CommandScan
 @SpringBootApplication
+@ConfigurationPropertiesScan
 @ImportRuntimeHints(HintsRegistrar.class)
 public class Application {
 
