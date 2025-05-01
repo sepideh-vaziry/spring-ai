@@ -1,13 +1,12 @@
 package com.example.springllm.output;
 
 import java.util.Map;
-import lombok.RequiredArgsConstructor;
+import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.converter.BeanOutputConverter;
 import org.springframework.ai.converter.MapOutputConverter;
-import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,11 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/ai/chat/books")
 public class BookController {
 
-  private final OpenAiChatModel chatModel;
+  private final ChatClient chatModel;
+
+  public BookController(ChatClient.Builder chatModel) {
+    this.chatModel = chatModel.build();
+  }
 
   @GetMapping("/author/{author}")
   public Map<String, Object> getAuthorsSocialLinks(
@@ -41,7 +43,9 @@ public class BookController {
     PromptTemplate promptTemplate = new PromptTemplate(message, modelMap);
     Prompt prompt = promptTemplate.create();
 
-    ChatResponse chatResponse = chatModel.call(prompt);
+    ChatResponse chatResponse = chatModel.prompt(prompt)
+        .call()
+        .chatResponse();
 
     return mapOutputConverter.convert(chatResponse.getResult().getOutput().getText());
   }
@@ -66,7 +70,9 @@ public class BookController {
     PromptTemplate promptTemplate = new PromptTemplate(message, modelMap);
     Prompt prompt = promptTemplate.create();
 
-    ChatResponse chatResponse = chatModel.call(prompt);
+    ChatResponse chatResponse = chatModel.prompt(prompt)
+        .call()
+        .chatResponse();
 
     return beanOutputConverter.convert(chatResponse.getResult().getOutput().getText());
   }

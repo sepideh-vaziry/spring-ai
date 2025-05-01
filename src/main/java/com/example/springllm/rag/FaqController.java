@@ -7,6 +7,7 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +24,10 @@ public class FaqController {
   @Value("classpath:/prompts/rag-prompt-template.st")
   private Resource ragPromptTemplate;
 
-  public FaqController(ChatClient.Builder builder, VectorStore vectorStore) {
+  public FaqController(
+      ChatClient.Builder builder,
+      @Qualifier("olympicVectorStore") VectorStore vectorStore
+  ) {
     this.chatClient = builder
         .defaultAdvisors(new QuestionAnswerAdvisor(vectorStore,SearchRequest.builder().topK(2).build()))
         .build();
