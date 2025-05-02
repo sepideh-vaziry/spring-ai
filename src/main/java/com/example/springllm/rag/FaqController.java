@@ -29,7 +29,7 @@ public class FaqController {
       @Qualifier("olympicVectorStore") VectorStore vectorStore
   ) {
     this.chatClient = builder
-        .defaultAdvisors(new QuestionAnswerAdvisor(vectorStore,SearchRequest.builder().topK(2).build()))
+        .defaultAdvisors(new QuestionAnswerAdvisor(vectorStore, SearchRequest.builder().topK(2).build()))
         .build();
   }
 

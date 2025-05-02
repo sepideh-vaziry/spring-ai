@@ -1,6 +1,8 @@
 package com.example.springllm.stream;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +17,9 @@ public class StreamingChatController {
   private final ChatClient chatClient;
 
   public StreamingChatController(ChatClient.Builder builder) {
-    this.chatClient = builder.build();
+    this.chatClient = builder
+        .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
+        .build();
   }
 
   @PostMapping("/chat")
